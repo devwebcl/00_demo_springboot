@@ -2,11 +2,24 @@
 
 version: "2"
 plugins:
+  #https://docs.codeclimate.com/docs/pmd  
+  pmd:
+    enabled: true
+  #https://docs.codeclimate.com/docs/fixme
+  fixme:
+    enabled: true
+  #https://docs.codeclimate.com/docs/git-legal
+  git-legal:
+    enabled: true
+  #https://docs.codeclimate.com/docs/markdownlint  
+  markdownlint:
+    enabled: true
   # https://docs.codeclimate.com/docs/sonar-java
   sonar-java:
     enabled: true
     config:
       sonar.java.source: "11"
+      minimum_severity: major
   # https://docs.codeclimate.com/docs/checkstyle
   checkstyle:
     enabled: true

@@ -10,22 +10,28 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.service.DemoService;
+import com.example.demo.service.third.auth.RestApache;
+import com.example.demo.service.third.auth.RestJdkPoc;
+import com.example.demo.service.third.auth.dto.AuthRequestDto;
+import com.example.demo.service.third.auth.dto.AuthResponseDto;
+
+import io.micrometer.core.annotation.Timed;
 
 
 
@@ -41,46 +47,163 @@ public class DemoController {
 	  @Autowired
 	  private DemoService demoService;
 
+	  @Autowired
+	  private RestJdkPoc restJdkPoc;
 
-
-  @GetMapping(value = "/healthcheck")
-  public ResponseEntity<String> healthCheck() {
-	  log.debug("Healthcheck");
-      return new ResponseEntity<>("{ \"respuesta\" : \"Estoy vivo !!!\"}", HttpStatus.OK);
-  }
+	  @Autowired
+	  private RestApache restApache;
 
 
 
-  // TODO: swagger !
-  // http://127.0.0.1:8080/example/hola?mundo=1
-  @GetMapping(value="/hola")
-  public @ResponseBody String getCuentasVinculadas(@RequestParam("mundo") long mundo) {
-
-		try {
-
-			log.debug("mundo = {}", mundo);
-
-			Calendar calendar = Calendar.getInstance();
-			System.out.println("> " + calendar.getTimeZone() + "\n");
-			System.out.println("today is " + new Date() );
-
-			 MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-			 long memoria = memoryBean.getHeapMemoryUsage().getMax();
-
-			 System.out.println("xmx = " + memoria);
+	  @GetMapping(value = "/healthcheck")
+	  public ResponseEntity<String> healthCheck() {
+		  log.debug("Healthcheck");
+	      return new ResponseEntity<>("{ \"respuesta\" : \"Estoy vivo !!!\"}", HttpStatus.OK);
+	  }
 
 
-			String resultado = demoService.getMundo(mundo);
+	  @Timed
+	  @Transactional(timeout = 5)
+	  @GetMapping(value = "/test")
+	  public ResponseEntity<String> test() {
 
-			log.debug("resultado: {}", resultado);
+		  System.out.println("http.keepAlive-->" + System.getProperty("http.keepAlive"));
 
-			return resultado;
+		  try {
+			  if(true)
+			    Thread.sleep(4000);
+		  } catch(Exception e) {
+			  System.out.println(e);
+		  }
 
-		} catch (Exception e) {
-			log.error("searchCustomer Error: {}", e); // ExceptionUtils.getStackTrace(e)
-			return "error = " + e;
-		}
-  }
+		  //Thread.currentThread().interrupt();
+
+		  log.debug("test");
+	      return new ResponseEntity<>("{ \"respuesta\" : \"test !!!\"}", HttpStatus.OK);
+	  }
+
+
+	  @GetMapping(value = "/vars")
+	  public ResponseEntity<String> vars() {
+
+		  System.setProperty("http.keepAlive", "false");
+
+			Properties p = System.getProperties();
+			Enumeration keys = p.keys();
+			while (keys.hasMoreElements()) {
+			    String key = (String)keys.nextElement();
+			    String value = (String)p.get(key);
+			    System.out.println(key + ": " + value);
+			}
+
+
+		  //Thread.currentThread().interrupt();
+
+		  log.debug("test");
+	      return new ResponseEntity<>("{ \"respuesta\" : \"vars !!!\"}", HttpStatus.OK);
+	  }
+
+
+
+
+	  // TODO: swagger !
+	  // http://127.0.0.1:8080/example/hola?mundo=1
+	  @GetMapping(value="/hola")
+	  public @ResponseBody String getCuentasVinculadas(@RequestParam("mundo") long mundo) {
+
+			try {
+
+				log.debug("mundo = {}", mundo);
+
+				Calendar calendar = Calendar.getInstance();
+				System.out.println("> " + calendar.getTimeZone() + "\n");
+				System.out.println("today is " + new Date() );
+
+				 MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+				 long memoria = memoryBean.getHeapMemoryUsage().getMax();
+
+				 System.out.println("xmx = " + memoria);
+
+
+				String resultado = demoService.getMundo(mundo);
+
+				log.debug("resultado: {}", resultado);
+
+				return resultado;
+
+			} catch (Exception e) {
+				log.error("searchCustomer Error: {}", e); // ExceptionUtils.getStackTrace(e)
+				return "error = " + e;
+			}
+	  }
+
+
+
+	  // http://127.0.0.1:8080/example/jdk
+
+
+	  //JDK client
+	  @GetMapping(value="/jdk")
+	  public @ResponseBody String getRestJdkPoc() {
+
+		System.out.println("jdk = {}");
+
+		//workaround hediondo:
+		//System.setProperty("http.keepAlive", "false");
+		System.out.println("http.keepAlive-->" + System.getProperty("http.keepAlive"));
+
+
+		for(int i=0; i<20; i++) {
+
+			AuthRequestDto request = AuthRequestDto.builder().build();
+
+			// sleep !
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			AuthResponseDto response = restJdkPoc.execute(request);
+			System.out.println("jdk response=" + response);
+	    }
+
+
+		System.out.println("http.keepAlive-->" + System.getProperty("http.keepAlive"));
+		System.out.println("jdk end.");
+
+		return "ok.";
+	  }
+
+
+	  //Apache Client
+	  @GetMapping(value="/apache")
+	  public @ResponseBody String getRestApachePoc() {
+
+		System.out.println("apache = {}");
+
+		for(int i=0; i<20; i++) {
+
+			AuthRequestDto request = AuthRequestDto.builder().build();
+
+			// sleep !
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			AuthResponseDto response = restApache.execute(request);
+			System.out.println("apache response=" + response);
+	    }
+
+
+
+		System.out.println("apache end.");
+
+		return "ok.";
+	  }
+
 
 
 

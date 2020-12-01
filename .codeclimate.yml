@@ -19,7 +19,7 @@ plugins:
     enabled: true
     config:
       sonar.java.source: "11"
-      minimum_severity: major
+      minimum_severity: minor
   # https://docs.codeclimate.com/docs/checkstyle
   checkstyle:
     enabled: true

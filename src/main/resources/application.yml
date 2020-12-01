@@ -1,0 +1,59 @@
+spring:
+  main:
+    banner-mode: "off"
+    requiresLambdaAuthorization: false
+    allow-bean-definition-overriding: true
+  application:
+    name: @project.artifactId@
+    version: @project.version@
+  logger:
+    logRestTemplateRequestsEnabled: true
+server:
+  port: ${SERVICE_PORT:8080}
+  
+# The format used for the keystore. It could be set to JKS in case it is a JKS file
+  ssl:
+    enabled: false
+    key-store-type: PKCS12
+    # The path to the keystore containing the certificate
+    key-store: classpath:keystore/baeldung.p12
+    # The password used to generate the certificate
+    key-store-password: password
+    # The alias mapped to the certificate
+    key-alias: baeldung
+  servlet:
+    session:
+      timeout: 3s
+  server:
+    tomcat:
+      connection-timeout: 3s
+
+aws:
+  region: "us-east-1"
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework.web: DEBUG #ERROR
+    com.example.demo: DEBUG
+
+#  file: /tmp/00_demo_springboot.log
+
+management:
+  health:
+    #enabling one by one
+    ping:
+      enabled: true
+    #disabling all Auto-configured HealthIndicators
+    defaults:
+      enabled: false
+
+rest:
+  web-services:
+    third-authorizer:
+      base-url: ${WS_AUTHORIZER_URL:http://127.0.0.1:7001/api/v1/login}
+      username: test
+      password: "123456"

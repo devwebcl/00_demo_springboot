@@ -1,4 +1,7 @@
 # 00_demo_springboot
 
-Examples of RestTemplate using JDK HTTP, and Apache HC client.
+Examples of ```RestTemplate``` using JDK HTTP, and Apache HC client factories.
+
+- ```SimpleClientHttpRequestFactory```
+- ```HttpComponentsClientHttpRequestFactory```
 

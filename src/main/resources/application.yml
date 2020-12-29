@@ -10,6 +10,11 @@ spring:
     logRestTemplateRequestsEnabled: true
 server:
   port: ${SERVICE_PORT:8080}
+  # habilitar compresion de respuestas application/json mayores a 2 KB
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 2048
   
 # The format used for the keystore. It could be set to JKS in case it is a JKS file
   ssl:
@@ -27,6 +32,7 @@ server:
   server:
     tomcat:
       connection-timeout: 3s
+
 
 aws:
   region: "us-east-1"

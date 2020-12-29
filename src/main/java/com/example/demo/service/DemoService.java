@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.DemoDto;
+
 //import kong.unirest.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DemoService {
 
+	private DemoDto demoDto;
 
 
     public DemoService() {
@@ -22,8 +25,22 @@ public class DemoService {
 
     public String getMundo(long cifId) {
 
-    	return "{ 'holaMundo' }";
+    	return "{ 'holaMundo' }" + demoDto;
     }
+
+
+    //ejemplo 2:
+    private String name = null;
+
+    public String greet(String greetee) {
+
+      if (greetee != null) {
+        this.name = greetee;
+      }
+
+      return "Hello " + this.name;  // if greetee is null, you see the previous user's data
+    }
+
 
 
 }

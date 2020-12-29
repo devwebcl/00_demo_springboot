@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,12 @@ import com.example.demo.service.third.auth.RestApache;
 import com.example.demo.service.third.auth.RestJdkPoc;
 import com.example.demo.service.third.auth.dto.AuthRequestDto;
 import com.example.demo.service.third.auth.dto.AuthResponseDto;
+import com.google.gson.Gson;
 
-import io.micrometer.core.annotation.Timed;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
+//import io.micrometer.core.annotation.Timed;
 
 
 
@@ -62,8 +67,8 @@ public class DemoController {
 	  }
 
 
-	  @Timed
-	  @Transactional(timeout = 5)
+	  //@Timed
+	  //@Transactional(timeout = 5)
 	  @GetMapping(value = "/test")
 	  public ResponseEntity<String> test() {
 
@@ -162,6 +167,7 @@ public class DemoController {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 
 			AuthResponseDto response = restJdkPoc.execute(request);
@@ -191,6 +197,7 @@ public class DemoController {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 
 			AuthResponseDto response = restApache.execute(request);
@@ -204,6 +211,33 @@ public class DemoController {
 		return "ok.";
 	  }
 
+
+
+		// json 4kb response
+		@GetMapping(value = "/fourkb", produces = "application/json")
+		public @ResponseBody String getJson4kb() {
+
+			System.out.println("fourkb = {}");
+
+			JSONArray personas = new JSONArray();
+
+			for (int i = 0; i < 100; i++) { // 50~=4kb , 100~=8kb
+
+				JSONObject persona = new JSONObject();
+
+				persona.put("name", "juan");
+				persona.put("lastname", "perez");
+				persona.put("id", UUID.randomUUID());
+
+				personas.put(persona);
+			}
+
+			String json = new Gson().toJson(personas);
+
+			System.out.println("fourkb end.");
+
+			return json;
+		}
 
 
 

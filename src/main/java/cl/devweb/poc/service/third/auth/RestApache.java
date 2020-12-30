@@ -1,4 +1,4 @@
-package com.example.demo.service.third.auth;
+package cl.devweb.poc.service.third.auth;
 
 
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -9,8 +9,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.service.third.auth.dto.AuthRequestDto;
-import com.example.demo.service.third.auth.dto.AuthResponseDto;
+import cl.devweb.poc.service.third.auth.dto.AuthRequestDto;
+import cl.devweb.poc.service.third.auth.dto.AuthResponseDto;
 
 
 

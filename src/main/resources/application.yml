@@ -44,7 +44,7 @@ logging:
   level:
     root: INFO
     org.springframework.web: DEBUG #ERROR
-    com.example.demo: DEBUG
+    cl.devweb.poc: DEBUG
 
 #  file: /tmp/00_demo_springboot.log
 

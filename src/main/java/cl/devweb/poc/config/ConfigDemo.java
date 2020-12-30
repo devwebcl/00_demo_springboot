@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package cl.devweb.poc.config;
 
 /*import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;

@@ -1,9 +1,8 @@
-package com.example.demo.service;
+package cl.devweb.poc.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.DemoDto;
-
+import cl.devweb.poc.dto.DemoDto;
 //import kong.unirest.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
 

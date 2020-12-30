@@ -1,4 +1,4 @@
-package com.example.demo.service.third.auth.dto;
+package cl.devweb.poc.service.third.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

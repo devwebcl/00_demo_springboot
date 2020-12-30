@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package cl.devweb.poc.controller;
 
 
 //import io.swagger.annotations.Api;
@@ -26,12 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.service.DemoService;
-import com.example.demo.service.third.auth.RestApache;
-import com.example.demo.service.third.auth.RestJdkPoc;
-import com.example.demo.service.third.auth.dto.AuthRequestDto;
-import com.example.demo.service.third.auth.dto.AuthResponseDto;
 import com.google.gson.Gson;
+
+import cl.devweb.poc.service.DemoService;
+import cl.devweb.poc.service.third.auth.RestApache;
+import cl.devweb.poc.service.third.auth.RestJdkPoc;
+import cl.devweb.poc.service.third.auth.dto.AuthRequestDto;
+import cl.devweb.poc.service.third.auth.dto.AuthResponseDto;
 
 import org.json.JSONObject;
 import org.json.JSONArray;

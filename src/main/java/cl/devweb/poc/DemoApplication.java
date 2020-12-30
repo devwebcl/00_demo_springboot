@@ -1,11 +1,11 @@
-package com.example.demo;
+package cl.devweb.poc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.example.demo", "com.example.demo.service.third.auth"})
+@ComponentScan({"cl.devweb.poc", "cl.devweb.poc.service.third.auth"})
 public class DemoApplication {
 
 	public static void main(String[] args) {

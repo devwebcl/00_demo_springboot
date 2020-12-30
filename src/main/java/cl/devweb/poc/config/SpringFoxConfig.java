@@ -16,7 +16,8 @@ public class SpringFoxConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-        		.pathMapping("/")
+          .pathMapping("/")
+
           .select()
           .apis(RequestHandlerSelectors.any())
           .paths(PathSelectors.any())
